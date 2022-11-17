@@ -5,6 +5,7 @@ import com.asrar_blog.exceptions.ResourceNotFoundException;
 import com.asrar_blog.payloads.UserDTO;
 import com.asrar_blog.repositories.UserRepo;
 import com.asrar_blog.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,13 @@ import java.util.stream.Collectors;
 public class UserServiceImplementation implements UserService {
 
     @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
     private UserRepo userRepo;
+
+    public UserServiceImplementation() {
+    }
+
     @Override
     public UserDTO createUser(UserDTO userDTO) {
         User user = userDTOtoUser(userDTO);
@@ -50,21 +57,9 @@ public class UserServiceImplementation implements UserService {
         userRepo.delete(user);
     }
     private User userDTOtoUser(UserDTO userDTO){
-        User user = new User();
-        user.setId(userDTO.getId());
-        user.setName(userDTO.getName());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getEmail());
-        user.setAbout(userDTO.getAbout());
-        return user;
+        return this.modelMapper.map(userDTO,User.class);
     }
     private UserDTO usertoUserDTO(User user){
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setName(user.getName());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setPassword(user.getEmail());
-        userDTO.setAbout(user.getAbout());
-        return userDTO;
+        return this.modelMapper.map(user,UserDTO.class);
     }
 }
