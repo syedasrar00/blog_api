@@ -1,10 +1,18 @@
 package com.asrar_blog.payloads;
 
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
 public class UserDTO {
     private int id;
+    @NotNull
     private String name;
+    @Email
     private String email;
+    @NotNull
     private String password;
+    @NotNull
     private String about;
 
     public UserDTO() {
