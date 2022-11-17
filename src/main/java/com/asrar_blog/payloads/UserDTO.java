@@ -1,18 +1,20 @@
 package com.asrar_blog.payloads;
 
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 public class UserDTO {
     private int id;
-    @NotNull
+    @NotEmpty
+    @Size(min=4, message="Username must be at least 4 characters")
     private String name;
-    @Email
+    @Email(message = "Not a valid email.")
     private String email;
-    @NotNull
+    @NotEmpty
+    @Size(min=4, max=10, message ="password length must be between 4_10 characters")
     private String password;
-    @NotNull
+    @NotEmpty
+    @Size(min=7, message="about must be at least 7 characters")
     private String about;
 
     public UserDTO() {
