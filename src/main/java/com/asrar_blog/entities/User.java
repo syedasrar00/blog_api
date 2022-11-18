@@ -1,6 +1,5 @@
 package com.asrar_blog.entities;
 
-import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 
