@@ -36,8 +36,8 @@ public class CategoryServiceImplementation implements CategoryService {
 
     @Override
     public CategoryDTO updateCategory(CategoryDTO categoryDTO, int id) {
+        categoryDTO.setCategoryId(id);
         Category category = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category","CategoryID",id));
-        categoryDTO.setCategoryId(category.getCategoryId());
         category = mapper.map(categoryDTO , Category.class);
         return mapper.map(repo.save(category),CategoryDTO.class);
     }

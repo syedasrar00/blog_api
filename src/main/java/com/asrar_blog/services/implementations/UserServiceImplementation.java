@@ -32,9 +32,9 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDTO updateUser(UserDTO userDTO, Integer userId) {
+        userDTO.setId(userId);
         User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserID",userId));
         User userUpdate = userDTOtoUser(userDTO);
-        userUpdate.setId(userId);
         UserDTO updatedUserDTO = usertoUserDTO(userRepo.save(userUpdate));
         return updatedUserDTO;
     }
