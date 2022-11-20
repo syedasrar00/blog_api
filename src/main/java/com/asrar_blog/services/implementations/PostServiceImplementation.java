@@ -5,12 +5,16 @@ import com.asrar_blog.entities.Post;
 import com.asrar_blog.entities.User;
 import com.asrar_blog.exceptions.ResourceNotFoundException;
 import com.asrar_blog.payloads.PostDTO;
+import com.asrar_blog.payloads.PostResponse;
 import com.asrar_blog.repositories.CategoryRepository;
 import com.asrar_blog.repositories.PostsRepository;
 import com.asrar_blog.repositories.UserRepo;
 import com.asrar_blog.services.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -29,8 +33,17 @@ public class PostServiceImplementation implements PostService {
     private CategoryRepository categoryRepo;
 
     @Override
-    public List<PostDTO> getAllPosts() {
-        return postRepo.findAll().stream().map((e)->mapper.map(e,PostDTO.class)).collect(Collectors.toList());
+    public PostResponse getAllPosts(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        Page<Post> page = postRepo.findAll(pageable);
+        List<Post> postList = page.getContent();
+        List<PostDTO> postDTOList = postList.stream().map((e)->mapper.map(e,PostDTO.class)).collect(Collectors.toList());
+        PostResponse response = new PostResponse();
+        response.setPosts(postDTOList);
+        response.setPageNumber(pageNumber);
+        response.setPageSize(pageSize);
+        response.setTotalResults(postRepo.findAll().size());
+        return response;
     }
 
     @Override

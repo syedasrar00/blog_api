@@ -2,6 +2,7 @@ package com.asrar_blog.controllers;
 
 import com.asrar_blog.payloads.ApiResponse;
 import com.asrar_blog.payloads.PostDTO;
+import com.asrar_blog.payloads.PostResponse;
 import com.asrar_blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +17,11 @@ public class PostController {
     @Autowired
     private PostService postService;
     @GetMapping("/all")
-    public ResponseEntity<List<PostDTO>> getAllPosts(){
-        return new ResponseEntity<>(postService.getAllPosts(),HttpStatus.OK);
+    public ResponseEntity<PostResponse> getAllPosts(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    ){
+        return new ResponseEntity<>(postService.getAllPosts(pageNumber,pageSize),HttpStatus.OK);
     }
     @PostMapping("/user/{userId}/category/{categoryId}")
     public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO post, @PathVariable int userId, @PathVariable int categoryId){
