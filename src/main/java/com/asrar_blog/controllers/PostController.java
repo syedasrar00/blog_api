@@ -41,11 +41,15 @@ public class PostController {
         return new ResponseEntity<>(new ApiResponse("Deleted Sucessfully",true),HttpStatus.CREATED);
     }
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<PostDTO>> getPostByUserId(@PathVariable int userId){
-        return new ResponseEntity<>(postService.getAllPostsByUser(userId),HttpStatus.OK);
+    public ResponseEntity<PostResponse> getPostByUserId(@PathVariable int userId,
+                                                        @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+                                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
+        return new ResponseEntity<>(postService.getAllPostsByUser(userId, pageNumber, pageSize),HttpStatus.OK);
     }
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<PostDTO>> getPostByCategoryId(@PathVariable int categoryId){
-        return new ResponseEntity<>(postService.getAllPostsByCategory(categoryId),HttpStatus.OK);
+    public ResponseEntity<PostResponse> getPostByCategoryId(@PathVariable int categoryId,
+                                                            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
+        return new ResponseEntity<>(postService.getAllPostsByCategory(categoryId, pageNumber, pageSize),HttpStatus.OK);
     }
 }

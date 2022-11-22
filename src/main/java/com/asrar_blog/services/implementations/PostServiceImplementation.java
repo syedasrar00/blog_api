@@ -35,14 +35,15 @@ public class PostServiceImplementation implements PostService {
     @Override
     public PostResponse getAllPosts(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber,pageSize);
-        Page<Post> page = postRepo.findAll(pageable);
-        List<Post> postList = page.getContent();
+        Page<Post> pageList = postRepo.findAll(pageable);
+        List<Post> postList = pageList.getContent();
         List<PostDTO> postDTOList = postList.stream().map((e)->mapper.map(e,PostDTO.class)).collect(Collectors.toList());
         PostResponse response = new PostResponse();
         response.setPosts(postDTOList);
-        response.setPageNumber(pageNumber);
-        response.setPageSize(pageSize);
-        response.setTotalResults(postRepo.findAll().size());
+        response.setPageNumber(pageList.getNumber());
+        response.setPageSize(pageList.getSize());
+        response.setTotalResults((int)pageList.getTotalElements());
+        response.setTotalPages(pageList.getTotalPages());
         return response;
     }
 
@@ -78,15 +79,35 @@ public class PostServiceImplementation implements PostService {
     }
 
     @Override
-    public List<PostDTO> getAllPostsByCategory(int categoryId) {
+    public PostResponse getAllPostsByCategory(int categoryId, int pageNumber, int pageSize) {
         Category category = categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","CategoryID",categoryId));
-        return postRepo.findByCategory(category).stream().map((e)->mapper.map(e,PostDTO.class)).collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        Page<Post> pageList = postRepo.findByCategory(category,pageable);
+        List<Post> postList = pageList.getContent();
+        List<PostDTO> postDTOList = postList.stream().map((e)->mapper.map(e,PostDTO.class)).collect(Collectors.toList());
+        PostResponse response = new PostResponse();
+        response.setPosts(postDTOList);
+        response.setPageNumber(pageList.getNumber());
+        response.setPageSize(pageList.getSize());
+        response.setTotalResults((int)pageList.getTotalElements());
+        response.setTotalPages(pageList.getTotalPages());
+
+        return response;
     }
 
     @Override
-    public List<PostDTO> getAllPostsByUser(int userId) {
+    public PostResponse getAllPostsByUser(int userId, int pageNumber, int pageSize) {
         User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserId",userId));
-        return postRepo.findByUser(user).stream().map((e)->mapper.map(e,PostDTO.class)).collect(Collectors.toList());
-
+        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        Page<Post> pageList = postRepo.findByUser(user,pageable);
+        List<Post> postList = pageList.getContent();
+        List<PostDTO> postDTOList = postList.stream().map((e)->mapper.map(e,PostDTO.class)).collect(Collectors.toList());
+        PostResponse response = new PostResponse();
+        response.setPosts(postDTOList);
+        response.setPageNumber(pageList.getNumber());
+        response.setPageSize(pageList.getSize());
+        response.setTotalResults((int)pageList.getTotalElements());
+        response.setTotalPages(pageList.getTotalPages());
+        return response;
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 public class PostResponse {
     private int totalResults;
     private int pageNumber;
+    private int totalPages;
     private int pageSize;
     private List<PostDTO> posts;
 
@@ -22,6 +23,14 @@ public class PostResponse {
 
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
     }
 
     public int getPageSize() {
