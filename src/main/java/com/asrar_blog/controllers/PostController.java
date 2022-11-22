@@ -46,6 +46,12 @@ public class PostController {
                                                         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
         return new ResponseEntity<>(postService.getAllPostsByUser(userId, pageNumber, pageSize),HttpStatus.OK);
     }
+    @GetMapping("/title/{postTitle}")
+    public ResponseEntity<PostResponse> getPostTitle(@PathVariable String postTitle,
+                                                        @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+                                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
+        return new ResponseEntity<>(postService.getAllPostsByTitle(postTitle, pageNumber, pageSize),HttpStatus.OK);
+    }
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<PostResponse> getPostByCategoryId(@PathVariable int categoryId,
                                                             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
