@@ -110,4 +110,19 @@ public class PostServiceImplementation implements PostService {
         response.setTotalPages(pageList.getTotalPages());
         return response;
     }
+
+    @Override
+    public PostResponse getAllPostsByTitle(String postTitle, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        Page<Post> pageList = postRepo.findByPostTitle(postTitle, pageable);
+        List<Post> postList = pageList.getContent();
+        List<PostDTO> postDTOList = postList.stream().map((e)->mapper.map(e,PostDTO.class)).collect(Collectors.toList());
+        PostResponse response = new PostResponse();
+        response.setPosts(postDTOList);
+        response.setPageNumber(pageList.getNumber());
+        response.setPageSize(pageList.getSize());
+        response.setTotalResults((int)pageList.getTotalElements());
+        response.setTotalPages(pageList.getTotalPages());
+        return response;
+    }
 }

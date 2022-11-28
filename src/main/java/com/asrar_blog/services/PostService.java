@@ -14,4 +14,5 @@ public interface PostService {
     void deletePost(int postId);
     PostResponse getAllPostsByCategory(int categoryId, int pageNumber, int pageSize);
     PostResponse getAllPostsByUser(int userId, int pageNumber, int pageSize);
+    PostResponse getAllPostsByTitle(String postTitle, int pageNumber, int pageSize);
 }
