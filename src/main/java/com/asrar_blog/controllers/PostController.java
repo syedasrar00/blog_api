@@ -1,21 +1,32 @@
 package com.asrar_blog.controllers;
 
+import com.asrar_blog.entities.Post;
+import com.asrar_blog.exceptions.ResourceNotFoundException;
 import com.asrar_blog.payloads.ApiResponse;
 import com.asrar_blog.payloads.PostDTO;
 import com.asrar_blog.payloads.PostResponse;
+import com.asrar_blog.repositories.PostsRepository;
+import com.asrar_blog.services.FileService;
 import com.asrar_blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/post/")
 public class PostController {
     @Autowired
+    private FileService fileService;
+    @Autowired
     private PostService postService;
+    @Value("${project.image}")
+    private String path;
     @GetMapping("/all")
     public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
@@ -51,5 +62,12 @@ public class PostController {
                                                             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
         return new ResponseEntity<>(postService.getAllPostsByCategory(categoryId, pageNumber, pageSize),HttpStatus.OK);
+    }
+    @GetMapping("/image/upload/{postId}")
+    public ResponseEntity<PostDTO> uploadPostImage(@PathVariable int postId, @RequestParam("image") MultipartFile image) throws IOException {
+        String fileName = fileService.uploadImage(this.path,image);
+        PostDTO post = postService.getPostById(postId);
+        post.setPostImageURI(fileName);
+        return ResponseEntity.ok(postService.updatePost(post, postId));
     }
 }
