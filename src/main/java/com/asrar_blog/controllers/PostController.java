@@ -1,21 +1,24 @@
 package com.asrar_blog.controllers;
 
-import com.asrar_blog.entities.Post;
-import com.asrar_blog.exceptions.ResourceNotFoundException;
+
 import com.asrar_blog.payloads.ApiResponse;
 import com.asrar_blog.payloads.PostDTO;
 import com.asrar_blog.payloads.PostResponse;
-import com.asrar_blog.repositories.PostsRepository;
 import com.asrar_blog.services.FileService;
 import com.asrar_blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -69,11 +72,17 @@ public class PostController {
                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
         return new ResponseEntity<>(postService.getAllPostsByCategory(categoryId, pageNumber, pageSize),HttpStatus.OK);
     }
-    @GetMapping("/image/upload/{postId}")
+    @PostMapping("/image/upload/{postId}")
     public ResponseEntity<PostDTO> uploadPostImage(@PathVariable int postId, @RequestParam("image") MultipartFile image) throws IOException {
         String fileName = fileService.uploadImage(this.path,image);
         PostDTO post = postService.getPostById(postId);
         post.setPostImageURI(fileName);
         return ResponseEntity.ok(postService.updatePost(post, postId));
+    }
+    @GetMapping(value="/image/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public void downloadImage(@PathVariable String imageName, HttpServletResponse response) throws IOException {
+        InputStream resource = fileService.getResource(path,imageName);
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(resource, response.getOutputStream());
     }
 }
