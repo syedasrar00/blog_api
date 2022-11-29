@@ -18,8 +18,19 @@ public class User {
     private String about;
     @OneToMany(mappedBy = "user",cascade= CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy = "user",cascade= CascadeType.ALL)
+    private List<Comments> comments = new ArrayList<>();
+
 
     public User() {
+    }
+
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
     }
 
     public List<Post> getPosts() {

@@ -4,6 +4,7 @@ package com.asrar_blog.payloads;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 public class PostDTO {
     private int postId;
@@ -18,6 +19,16 @@ public class PostDTO {
     private Date publishDate;
     private CategoryDTO category;
     private UserDTO user;
+    private List<CommentsDTO> comments;
+
+    public List<CommentsDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentsDTO> comments) {
+        this.comments = comments;
+    }
+
     public PostDTO() {
     }
 

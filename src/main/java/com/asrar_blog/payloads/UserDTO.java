@@ -2,6 +2,7 @@ package com.asrar_blog.payloads;
 
 
 import javax.validation.constraints.*;
+import java.util.List;
 
 public class UserDTO {
     private int id;
@@ -16,7 +17,15 @@ public class UserDTO {
     @NotEmpty
     @Size(min=7, message="about must be at least 7 characters")
     private String about;
+    private List<CommentsDTO> comments;
 
+    public List<CommentsDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentsDTO> comments) {
+        this.comments = comments;
+    }
     public UserDTO() {
     }
 

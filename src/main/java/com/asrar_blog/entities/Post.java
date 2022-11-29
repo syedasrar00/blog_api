@@ -1,7 +1,9 @@
 package com.asrar_blog.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -23,8 +25,18 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @OneToMany(mappedBy = "post",cascade= CascadeType.ALL)
+    private List<Comments> comments = new ArrayList<>();
 
     public Post() {
+    }
+
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
     }
 
     public int getPostId() {
