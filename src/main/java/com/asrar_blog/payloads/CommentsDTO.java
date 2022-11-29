@@ -8,8 +8,6 @@ public class CommentsDTO {
     private int id;
     private String commentDescription;
     private Date date;
-    private PostDTO post;
-
     private UserDTO user;
 
     public CommentsDTO() {
@@ -37,14 +35,6 @@ public class CommentsDTO {
 
     public void setCommentDescription(String commentDescription) {
         this.commentDescription = commentDescription;
-    }
-
-    public PostDTO getPost() {
-        return post;
-    }
-
-    public void setPost(PostDTO post) {
-        this.post = post;
     }
 
     public UserDTO getUser() {
