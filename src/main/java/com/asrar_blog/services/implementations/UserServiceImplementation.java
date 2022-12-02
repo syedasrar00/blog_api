@@ -7,6 +7,7 @@ import com.asrar_blog.repositories.UserRepo;
 import com.asrar_blog.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImplementation implements UserService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -26,6 +29,9 @@ public class UserServiceImplementation implements UserService {
     @Override
     public UserDTO createUser(UserDTO userDTO) {
         User user = userDTOtoUser(userDTO);
+        String password = user.getPassword();
+        String encodedPassword = passwordEncoder.encode(password);
+        user.setPassword(encodedPassword);
         User savedUser = userRepo.save(user);
         return usertoUserDTO(savedUser);
     }
@@ -35,6 +41,9 @@ public class UserServiceImplementation implements UserService {
         userDTO.setId(userId);
         User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserID",userId));
         User userUpdate = userDTOtoUser(userDTO);
+        String password = userUpdate.getPassword();
+        String encodedPassword = passwordEncoder.encode(password);
+        userUpdate.setPassword(encodedPassword);
         UserDTO updatedUserDTO = usertoUserDTO(userRepo.save(userUpdate));
         return updatedUserDTO;
     }
