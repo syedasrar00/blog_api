@@ -22,13 +22,6 @@ public class ImageServiceImplementation implements ImageService {
     private PostsRepository postRepo;
     @Autowired
     private ModelMapper mapper;
-//    @Override
-//    public List<ImageDTO> getAllImagesForPost(int postId) {
-//        Post post = postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",postId));
-//        List<Image> list =imageRepo.findByPost(post);
-//        return list.stream().map(e-> mapper.map(e,ImageDTO.class)).collect(Collectors.toList());
-//    }
-
     @Override
     public ImageDTO uploadImageForPost(String imageName, int postId) {
         Post post = postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",postId));
