@@ -17,7 +17,8 @@ public class Post {
     )
     private String postTitle;
     private String postContent;
-    private String postImageURI;
+    @OneToMany(cascade= CascadeType.ALL)
+    private List<Image> postImageList = new ArrayList<>();
     private Date publishDate;
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -63,12 +64,12 @@ public class Post {
         this.postContent = postContent;
     }
 
-    public String getPostImageURI() {
-        return postImageURI;
+    public List<Image> getPostImageList() {
+        return postImageList;
     }
 
-    public void setPostImageURI(String postImageURI) {
-        this.postImageURI = postImageURI;
+    public void setPostImageList(List<Image> postImageList) {
+        this.postImageList = postImageList;
     }
 
     public Date getPublishDate() {

@@ -15,7 +15,7 @@ public class PostDTO {
     @Size(min=4, message="Content must be at least 4 characters")
     private String postContent;
     @NotEmpty(message="Cannot be empty")
-    private String postImageURI;
+    private List<ImageDTO> postImageList;
     private Date publishDate;
     private CategoryDTO category;
     private UserDTO user;
@@ -56,12 +56,12 @@ public class PostDTO {
         this.postContent = postContent;
     }
 
-    public String getPostImageURI() {
-        return postImageURI;
+    public List<ImageDTO> getPostImageList() {
+        return postImageList;
     }
 
-    public void setPostImageURI(String postImageURI) {
-        this.postImageURI = postImageURI;
+    public void setPostImageList(List<ImageDTO> postImageList) {
+        this.postImageList = postImageList;
     }
 
     public Date getPublishDate() {

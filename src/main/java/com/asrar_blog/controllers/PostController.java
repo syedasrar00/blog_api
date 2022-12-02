@@ -25,11 +25,8 @@ import java.util.List;
 @RequestMapping("/api/post/")
 public class PostController {
     @Autowired
-    private FileService fileService;
-    @Autowired
     private PostService postService;
-    @Value("${project.image}")
-    private String path;
+
     @GetMapping("/all")
     public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
@@ -72,17 +69,6 @@ public class PostController {
                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
         return new ResponseEntity<>(postService.getAllPostsByCategory(categoryId, pageNumber, pageSize),HttpStatus.OK);
     }
-    @PostMapping("/image/upload/{postId}")
-    public ResponseEntity<PostDTO> uploadPostImage(@PathVariable int postId, @RequestParam("image") MultipartFile image) throws IOException {
-        String fileName = fileService.uploadImage(this.path,image);
-        PostDTO post = postService.getPostById(postId);
-        post.setPostImageURI(fileName);
-        return ResponseEntity.ok(postService.updatePost(post, postId));
-    }
-    @GetMapping(value="/image/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public void downloadImage(@PathVariable String imageName, HttpServletResponse response) throws IOException {
-        InputStream resource = fileService.getResource(path,imageName);
-        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-        StreamUtils.copy(resource, response.getOutputStream());
-    }
+
+
 }
