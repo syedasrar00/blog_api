@@ -12,5 +12,4 @@ public class ConfigFile{
         return new ModelMapper();
     }
 
-
 }
