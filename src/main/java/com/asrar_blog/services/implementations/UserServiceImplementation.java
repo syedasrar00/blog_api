@@ -39,7 +39,7 @@ public class UserServiceImplementation implements UserService {
     @Override
     public UserDTO updateUser(UserDTO userDTO, Integer userId) {
         userDTO.setId(userId);
-        User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserID",userId));
+        User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserID",""+userId));
         User userUpdate = userDTOtoUser(userDTO);
         String password = userUpdate.getPassword();
         String encodedPassword = passwordEncoder.encode(password);
@@ -50,7 +50,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDTO getGetUserById(Integer userId) {
-        User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserID",userId));
+        User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserID",""+userId));
         return usertoUserDTO(user);
     }
 
@@ -62,7 +62,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public void deleteUser(Integer userId) {
-        User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserID",userId));
+        User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserID",""+userId));
         userRepo.delete(user);
     }
     private User userDTOtoUser(UserDTO userDTO){

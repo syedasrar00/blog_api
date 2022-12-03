@@ -40,7 +40,7 @@ public class CommentServiceImplementation implements CommentsService {
 
     @Override
     public void deleteComment(int commentId) {
-        repo.delete(repo.findById(commentId).orElseThrow(()-> new ResourceNotFoundException("Comments","commentId",commentId)));
+        repo.delete(repo.findById(commentId).orElseThrow(()-> new ResourceNotFoundException("Comments","commentId",""+commentId)));
     }
     @Override
     public List<CommentsDTO> getAllCommentsForPost(int postId) {

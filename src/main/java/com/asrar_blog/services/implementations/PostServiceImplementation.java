@@ -49,21 +49,21 @@ public class PostServiceImplementation implements PostService {
 
     @Override
     public PostDTO getPostById(int postId) {
-        return mapper.map(postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",postId)),PostDTO.class);
+        return mapper.map(postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",""+postId)),PostDTO.class);
     }
 
     @Override
     public PostDTO createPost(PostDTO postDto, int userId, int categoryId) {
         Post post = mapper.map(postDto,Post.class);
         post.setPublishDate(new Date());
-        post.setUser(userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserId",userId)));
-        post.setCategory(categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","CategoryId",categoryId)));
+        post.setUser(userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserId",""+userId)));
+        post.setCategory(categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","CategoryId",""+categoryId)));
         return mapper.map(postRepo.save(post),PostDTO.class);
     }
 
     @Override
     public PostDTO updatePost(PostDTO postDto, int postId) {
-        Post post = postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",postId));
+        Post post = postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",""+postId));
         Post updatedPost = mapper.map(postDto,Post.class);
         updatedPost.setPostId(post.getPostId());
         updatedPost.setUser(post.getUser());
@@ -74,13 +74,13 @@ public class PostServiceImplementation implements PostService {
 
     @Override
     public void deletePost(int postId) {
-        Post post = postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",postId));
+        Post post = postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",""+postId));
         postRepo.delete(post);
     }
 
     @Override
     public PostResponse getAllPostsByCategory(int categoryId, int pageNumber, int pageSize) {
-        Category category = categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","CategoryID",categoryId));
+        Category category = categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","CategoryID",""+categoryId));
         Pageable pageable = PageRequest.of(pageNumber,pageSize);
         Page<Post> pageList = postRepo.findByCategory(category,pageable);
         List<Post> postList = pageList.getContent();
@@ -97,7 +97,7 @@ public class PostServiceImplementation implements PostService {
 
     @Override
     public PostResponse getAllPostsByUser(int userId, int pageNumber, int pageSize) {
-        User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserId",userId));
+        User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","UserId",""+userId));
         Pageable pageable = PageRequest.of(pageNumber,pageSize);
         Page<Post> pageList = postRepo.findByUser(user,pageable);
         List<Post> postList = pageList.getContent();

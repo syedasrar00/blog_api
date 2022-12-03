@@ -31,20 +31,20 @@ public class CategoryServiceImplementation implements CategoryService {
 
     @Override
     public CategoryDTO getCategoryById(int id) {
-        return mapper.map(repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category","CategoryID",id)), CategoryDTO.class);
+        return mapper.map(repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category","CategoryID",""+id)), CategoryDTO.class);
     }
 
     @Override
     public CategoryDTO updateCategory(CategoryDTO categoryDTO, int id) {
         categoryDTO.setCategoryId(id);
-        Category category = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category","CategoryID",id));
+        Category category = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category","CategoryID",""+id));
         category = mapper.map(categoryDTO , Category.class);
         return mapper.map(repo.save(category),CategoryDTO.class);
     }
 
     @Override
     public void deleteCategory(int id) {
-        Category category = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category","CategoryID",id));
+        Category category = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category","CategoryID",""+id));
         repo.delete(category);
     }
 }

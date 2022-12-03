@@ -24,7 +24,7 @@ public class ImageServiceImplementation implements ImageService {
     private ModelMapper mapper;
     @Override
     public ImageDTO uploadImageForPost(String imageName, int postId) {
-        Post post = postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",postId));
+        Post post = postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",""+postId));
         Image image = new Image();
         image.setPost(post);
         image.setImageName(imageName);
